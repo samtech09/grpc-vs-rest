@@ -1,7 +1,7 @@
 package reposit
 
 import (
-	"misc/grpc-rest-mock/grpc/model"
+	"github.com/samtech09/grpc-vs-rest/grpc/model"
 	"strconv"
 )
 

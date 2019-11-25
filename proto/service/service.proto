@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "misc/grpc-rest-mock/proto/model/output.proto";
+import "sam-learn/grpc-vs-rest/proto/model/output.proto";
 
 package service;
 

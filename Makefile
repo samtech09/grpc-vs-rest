@@ -12,6 +12,8 @@ protoc:
 	@protoc -I proto/ -I${GOPATH}/src --go_out=plugins=grpc:grpc/ proto/model/output.proto
 	@protoc -I proto/ -I${GOPATH}/src --go_out=plugins=grpc:grpc/ proto/service/service.proto
 	@sed -i "s/\/proto\//\/grpc\//g" grpc/service/service.pb.go
+	@sed -i "s/sam-learn\//github.com\/samtech09\//g" grpc/service/service.pb.go
+	
 	@echo "Go code generated from proto files..."
 	
 	
