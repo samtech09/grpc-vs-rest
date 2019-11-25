@@ -22,3 +22,10 @@ build: clean
 	@GOOS=$(GOOS) GOARCH=$(GOARCH) cd server && go build -o $(BINPATH)/$(EXENAME)_server . || (echo "build failed $$?"; exit 1)
 	@echo 'Build suceeded... done'
 	
+
+test:
+	cd server && go test -v
+
+bench:
+	cd server && go test -v -bench=. --benchmem
+
