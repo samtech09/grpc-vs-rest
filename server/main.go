@@ -51,6 +51,7 @@ func startRestServer() {
 	//listen on local port 8888
 	port := ":8080"
 	http.HandleFunc("/getDetail", handlers.GetDetailRest)
+	http.HandleFunc("/getDetailbyost", handlers.GetDetailRestByPost)
 	fmt.Printf("Server Init")
 
 	fmt.Println("REST server listening on port ", port)

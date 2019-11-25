@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -140,7 +142,7 @@ func TestGetDetailRestLive(t *testing.T) {
 	}
 }
 
-func BenchmarkGetDetailRest2Live(b *testing.B) {
+func BenchmarkGetDetailRestLive(b *testing.B) {
 	req, err := http.NewRequest("GET", "http://localhost:8080/getDetail", nil)
 	if err != nil {
 		b.Fatal(err)
@@ -170,6 +172,69 @@ func BenchmarkGetDetailRest2Live(b *testing.B) {
 		if strbody != expected {
 			b.Errorf("handler returned unexpected body: got %v want %v",
 				strbody, expected)
+		}
+	}
+}
+
+func TestGetDetailRestLiveByPost(t *testing.T) {
+	filter := model.Filter{}
+	filter.From = "2016-01-01"
+	filter.To = "2019-11-11"
+
+	payload, err := json.Marshal(filter)
+	if err != nil {
+		t.Error("Failed marshling payload")
+	}
+
+	resp, err := http.Post("http://localhost:8080/getDetailbyost", "application/json", bytes.NewBuffer(payload))
+	if err != nil {
+		t.Error("Error making request. ", err)
+	}
+
+	defer resp.Body.Close()
+
+	// body, _ := ioutil.ReadAll(resp.Body)
+	// strbody := string(body)
+	// fmt.Println(strbody)
+
+	dest := []model.StudentDetails{}
+	err = json.NewDecoder(resp.Body).Decode(&dest)
+	if err != nil {
+		t.Error("Error decoding response: ", err.Error())
+	}
+
+	expected := 2
+	if len(dest) != expected {
+		t.Errorf("handler returned unexpected number of records: got %d want %d", len(dest), expected)
+	}
+}
+
+func BenchmarkGetDetailRestLiveByPost(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		filter := model.Filter{}
+		filter.From = "2016-01-01"
+		filter.To = "2019-11-11"
+
+		payload, err := json.Marshal(filter)
+		if err != nil {
+			b.Error("Failed marshling payload")
+		}
+
+		resp, err := http.Post("http://localhost:8080/getDetailbyost", "application/json", bytes.NewBuffer(payload))
+		if err != nil {
+			b.Error("Error making request. ", err)
+		}
+
+		defer resp.Body.Close()
+		dest := []model.StudentDetails{}
+		err = json.NewDecoder(resp.Body).Decode(&dest)
+		if err != nil {
+			b.Error("Error decoding response: ", err)
+		}
+
+		expected := 2
+		if len(dest) != expected {
+			b.Errorf("handler returned unexpected number of records: got %d want %d", len(dest), expected)
 		}
 	}
 }
