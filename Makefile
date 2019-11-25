@@ -27,5 +27,5 @@ test:
 	cd server && go test -v
 
 bench:
-	cd server && go test -v -bench=. --benchmem
+	cd server && go test -v -bench=. -benchmem
 

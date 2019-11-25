@@ -1,19 +1,24 @@
 ## grpc-vs-rest
-It is just PoC to compare and benchmark Grpc vs Rest calls in golang.
+It is just PoC to compare and benchmark Grpc vs Rest calls in golang using different eccodings.
 
 ### Benchmark
 ```
 goos: linux
 goarch: amd64
 pkg: github.com/samtech09/grpc-vs-rest/server
-BenchmarkGetDetailGrpc-8                    8526            148237 ns/op           10048 B/op        185 allocs/op
-BenchmarkGetDetailRest-8                  200913              5455 ns/op            3217 B/op         26 allocs/op
-BenchmarkGetDetailRestLive-8               14852             74429 ns/op            6860 B/op         75 allocs/op
-BenchmarkGetDetailRestLiveByPost-8         12901             94485 ns/op            9230 B/op        107 allocs/op
+BenchmarkGetDetailGrpc-8                            9166            109297 ns/op           10049 B/op        185 allocs/op
+BenchmarkGetDetailRestLiveByPostJsoniter-8         14172             84467 ns/op            9370 B/op        113 allocs/op
+BenchmarkGetDetailRestLiveByPostMsgpack-8          10000            102643 ns/op           11046 B/op        142 allocs/op
+BenchmarkGetDetailRestLiveByPost-8                 12664             92779 ns/op            9222 B/op        107 allocs/op
 ```
 
-**BenchmarkGetDetailRest** is written using `httptest` package.
+**BenchmarkGetDetailGrpc** is for grpc using protobuf
 
-**BenchmarkGetDetailRest2Live** is written using `http.Client` as we do in real-world when calling APIs.
+**BenchmarkGetDetailRestLiveByPostJsoniter** is using `json-iterator` for json encoding/decoding.
 
-**BenchmarkGetDetailRestLiveByPost** is using marshaling/unmarshling request and response to JSON for real comparison, as grpc auto marshal/unmarshal on each request.
+**BenchmarkGetDetailRestLiveByPostMsgpack** is using `messagepack` instead of json.
+
+**BenchmarkGetDetailRestLiveByPost** is using standard json encoding/decoding.
+
+
+Benchmark and tests are using `http.Client` instead of 'httptest' to simulate real network calls to endpoints for real-world comparison.
