@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+import "misc/grpc-rest-mock/proto/model/output.proto";
+
+package service;
+
+message ServiceResp {
+  int64 count = 1;
+  repeated model.studentDetails data = 2;
+}
+
+// service definition
+service Report {
+    rpc GetDetail(model.Filter) returns (ServiceResp) {}
+}

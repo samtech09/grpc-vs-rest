@@ -1,0 +1,16 @@
+syntax = "proto3";
+package model;
+
+message Filter {
+  string from = 1;
+  string to = 2;
+}
+
+message studentDetails {
+  int32 id = 1;
+  string name = 2;
+  string rollNo = 3;
+  int32 age = 4;
+  bool examCleared = 5;
+}
+
